@@ -19,10 +19,6 @@ COMMON_TCP_PORTS = [20,  # adsfs
                     3268,  # Global Catalog Service
                     3389]  # RDP
 
-COMMON_UDP_PORTS = [137,  # NetBIOS Naming Service
-                    161,  # SNMP
-                    389]  # LDAP
-
 
 def conn_scan(host, port):
     try:
