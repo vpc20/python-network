@@ -1,5 +1,3 @@
-#!"C:\Program Files\Python36\"
-
 import argparse
 from socket import *
 
