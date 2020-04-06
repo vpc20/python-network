@@ -1,17 +1,37 @@
 import argparse
 from socket import *
 
+COMMON_TCP_PORTS = [20,  # adsfs
+                    21,  # FTP
+                    22,  # SSH
+                    23,  # TELNET
+                    25,  # SMTP
+                    53,  # DNS zone transfers
+                    80,  # HTTP
+                    110,  # POP3
+                    135,  # MS RPC Endpoint
+                    137,  # NetBIOS Naming Service
+                    139,  # SMB over NetBIOS
+                    143,  # IMAP
+                    389,  # LDAP
+                    443,  # HTTPS
+                    445,  # SMB over TCP
+                    3268,  # Global Catalog Service
+                    3389]  # RDP
 
-def conn_scan(tgt_host, tgt_port):
+COMMON_UDP_PORTS = [137,  # NetBIOS Naming Service
+                    161,  # SNMP
+                    389]  # LDAP
+
+
+def conn_scan(host, port):
     try:
         # Create the socket object
         conn_sock = socket(AF_INET, SOCK_STREAM)
-        # try to connect with the target
-        conn_sock.connect((tgt_host, tgt_port))
-        print(f'[+] tcp port {tgt_port} open')
-        # print_banner(connSock, tgt_port)
+        conn_sock.connect((host, port))
+        print(f'[+] tcp port {port} open')
         try:
-            print(f'Service name: {getservbyport(tgt_port, "tcp")}\n')
+            print(f'Service name: {getservbyport(port, "tcp")}\n')
         except:
             print('Service name: Not available\n')
     except:
@@ -27,10 +47,10 @@ def port_scan(host, ports):
     # For each port number call the connScan function
     for port in ports:
         if port == 'common':
-            for p in [25, 80, 443, 20, 21, 23, 143, 3389, 22, 53, 110, 139, 445]:
+            for p in COMMON_TCP_PORTS:
                 conn_scan(host, p)
         elif '-' in port:
-            ps =  port.split('-')
+            ps = port.split('-')
             start = ps[0]
             end = ps[1]
             if len(ps) == 2 and start.isdigit() and end.isdigit():
@@ -38,6 +58,7 @@ def port_scan(host, ports):
                     conn_scan(host, int(p))
         else:
             conn_scan(host, int(port))
+
 
 def main():
     argparser = argparse.ArgumentParser('TCP Port Scanner')
