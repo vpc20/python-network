@@ -46,23 +46,21 @@ def port_scan(host, ports):
 
 
 def main():
-    argparser = argparse.ArgumentParser('TCP Port Scanner')
-    argparser.add_argument("-a", "--address", type=str, help="The target IP address")
-    argparser.add_argument("-p", "--port", type=str, help="The port number to connect with "
-                                                          "(port number, 'common' or range). "
-                                                          "Range format is 'start-end'")
+    argparser = argparse.ArgumentParser('UDP Port Scanner')
+    argparser.add_argument("-a", "--address", type=str, required=True, help="IP address")
+    argparser.add_argument("-p", "--port", type=str, default=['common'], nargs='+',
+                           help="Port number. Port range start-end is allowed. Default value is 'common'")
     args = argparser.parse_args()
     if args.address is None or args.port is None:
         argparser.print_help()
         exit()
 
     ipaddress = args.address
-    ports = args.port.split(',')
+    ports = args.port
 
     # Call the Port Scan function
     port_scan(ipaddress, ports)
 
 
 if __name__ == "__main__":
-    # Call the main function
     main()
